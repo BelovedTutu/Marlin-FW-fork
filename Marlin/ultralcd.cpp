@@ -1397,7 +1397,30 @@ void kill_screen(const char* lcd_msg) {
   #else
     #define _MOVE_XYZ_ALLOWED true
   #endif
-
+  
+  #if ENABLED(MIXING_EXTRUDER)
+  // helper function for moving individual extruder in mixing extruder
+  static void _lcd_move_mixing_e(const uint8_t& id)
+  {
+	if (id < MIXING_STEPPERS)
+	{
+	  char cmd[4];
+	  uint8_t translateNum = MIXING_VIRTUAL_TOOLS;
+	  translateNum += id;
+	  sprintf_P(cmd, PSTR("T%i"), translateNum);
+	  enqueue_and_echo_command(cmd);
+	  lcd_move_e();
+	}		
+  }
+  // only automatically support till 3 mixing steppers for now
+  static void lcd_move_mixing_e0() { _lcd_move_mixing_e(0); }
+	#if MIXING_STEPPERS > 1
+    static void lcd_move_mixing_e1() { _lcd_move_mixing_e(1); }
+    #if MIXING_STEPPERS > 2
+      static void lcd_move_mixing_e2() { _lcd_move_mixing_e(2); }
+    #endif
+  #endif // MIXING_EXTRUDER
+  
   static void _lcd_move_menu_axis() {
     START_MENU();
     MENU_ITEM(back, MSG_MOVE_AXIS);
@@ -1416,18 +1439,28 @@ void kill_screen(const char* lcd_msg) {
         else
           MENU_ITEM(gcode, MSG_SELECT MSG_E2, PSTR("T1"));
       #endif
-
-      MENU_ITEM(submenu, MSG_MOVE_E, lcd_move_e);
-      #if E_MANUAL > 1
-        MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E1, lcd_move_e0);
-        MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E2, lcd_move_e1);
-        #if E_MANUAL > 2
-          MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E3, lcd_move_e2);
-          #if E_MANUAL > 3
-            MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E4, lcd_move_e3);
-          #endif
-        #endif
-      #endif
+	  #if DISABLED(MIXING_EXTRUDER)
+		  MENU_ITEM(submenu, MSG_MOVE_E, lcd_move_e);
+		#if E_MANUAL > 1
+			MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E1, lcd_move_e0);
+			MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E2, lcd_move_e1);
+			#if E_MANUAL > 2
+			  MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E3, lcd_move_e2);
+			  #if E_MANUAL > 3
+				MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E4, lcd_move_e3);
+			  #endif
+			#endif
+		#endif
+	  #else
+		MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E1, lcd_move_mixing_e0);
+			#if MIXING_STEPPERS > 1
+			  MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E2, lcd_move_mixing_e1);
+			  #if MIXING_STEPPERS > 2
+				MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E3, lcd_move_mixing_e2);
+			  #endif
+			#endif
+		#endif
+	  #endif
     }
     END_MENU();
   }

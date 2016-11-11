@@ -95,6 +95,10 @@
 #define E1_DIR_PIN         34
 #define E1_ENABLE_PIN      30
 
+#define E2_STEP_PIN        5
+#define E2_DIR_PIN         4
+#define E2_ENABLE_PIN      66
+
 #define SDSS               53
 #define LED_PIN            13
 
