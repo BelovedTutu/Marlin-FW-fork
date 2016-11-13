@@ -35,20 +35,25 @@
   /**
    * Marlin release version identifier
    */
-  #define SHORT_BUILD_VERSION "1.1.0-RC7"
+  #define SHORT_BUILD_VERSION "2.0.1"
+
+  /**
+   * Version string for 3d raion center
+  **/
+  #define VERSION_STRING SHORT_BUILD_VERSION
 
   /**
    * Verbose version identifier which should contain a reference to the location
    * from where the binary was downloaded or the source code was compiled.
    */
-  #define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION " (Github)"
+  #define DETAILED_BUILD_VERSION SHORT_BUILD_VERSION " (3DRaion)"
 
   /**
    * The STRING_DISTRIBUTION_DATE represents when the binary file was built,
    * here we define this default string as the date where the latest release
    * version was tagged.
    */
-  #define STRING_DISTRIBUTION_DATE "2016-07-31 12:00"
+  #define STRING_DISTRIBUTION_DATE "2016-11-13 19:00"
 
   /**
    * Required minimum Configuration.h and Configuration_adv.h file versions.
@@ -57,8 +62,8 @@
    * but not limited to: ADD, DELETE RENAME OR REPURPOSE any directive/option on
    * the configuration files.
    */
-  #define REQUIRED_CONFIGURATION_H_VERSION 010100
-  #define REQUIRED_CONFIGURATION_ADV_H_VERSION 010100
+  #define REQUIRED_CONFIGURATION_H_VERSION 010101
+  #define REQUIRED_CONFIGURATION_ADV_H_VERSION 010101
 
   /**
    * @todo: Missing documentation block
@@ -68,7 +73,7 @@
   /**
    * Defines a generic printer name to be output to the LCD after booting Marlin.
    */
-  #define MACHINE_NAME "3D Printer"
+  #define MACHINE_NAME "3DRaion Printer"
 
   /**
    * The SOURCE_CODE_URL is the location where users will find the Marlin Source

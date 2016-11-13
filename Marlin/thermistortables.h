@@ -1117,6 +1117,41 @@ const short temptable_70[][2] PROGMEM = {
 };
 #endif
 
+#if ANY_THERMISTOR_IS(80) //unknow thermistor
+const short temptable_80[][2] PROGMEM = {
+// Unknow thermistor used for 3DRaion 4
+// Verified by experience with thermometer
+   {1*OVERSAMPLENR, 641.1},
+   {21*OVERSAMPLENR, 276},
+   {24*OVERSAMPLENR, 263.6},
+   {33*OVERSAMPLENR, 247.4},
+   {43*OVERSAMPLENR, 231.1},
+   {51*OVERSAMPLENR, 220.5},
+   {65*OVERSAMPLENR, 210.1},
+   {79*OVERSAMPLENR, 200.1},
+   {95*OVERSAMPLENR, 189.6},
+   {116*OVERSAMPLENR, 179.9},
+   {140*OVERSAMPLENR, 170.7},
+   {171*OVERSAMPLENR, 160.7},
+   {209*OVERSAMPLENR, 150.2},
+   {254*OVERSAMPLENR, 140.1},
+   {304*OVERSAMPLENR, 130.3},
+   {365*OVERSAMPLENR, 120.5},
+   {439*OVERSAMPLENR, 110},
+   {515*OVERSAMPLENR, 106},
+   {598*OVERSAMPLENR, 90.3},
+   {673*OVERSAMPLENR, 80.9},
+   {759*OVERSAMPLENR, 70.1},
+   {824*OVERSAMPLENR, 60.3},
+   {881*OVERSAMPLENR, 50.6},
+   {926*OVERSAMPLENR, 40.3},
+   {939*OVERSAMPLENR, 37.4},
+   {965*OVERSAMPLENR, 29.4},
+   {975*OVERSAMPLENR, 24.9},
+   {1000*OVERSAMPLENR, 11.6},
+   {1010*OVERSAMPLENR, 0}
+};
+#endif
 // Pt1000 and Pt100 handling
 //
 // Rt=R0*(1+a*T+b*T*T) [for T>0]
