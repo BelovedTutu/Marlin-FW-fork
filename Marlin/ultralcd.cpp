@@ -116,7 +116,6 @@ uint8_t lcdDrawUpdate = LCDVIEW_CLEAR_CALL_REDRAW; // Set when the LCD needs to 
   static void lcd_prepare_menu();
   static void lcd_move_menu();
   static void lcd_control_menu();
-  static void lcd_flow_control_menu();
   static void lcd_control_temperature_menu();
   static void lcd_control_temperature_preheat_pla_settings_menu();
   static void lcd_control_temperature_preheat_abs_settings_menu();
@@ -586,8 +585,8 @@ void kill_screen(const char* lcd_msg) {
       if (!endstops.z_probe_enabled && TEST_BLTOUCH())
         MENU_ITEM(gcode, MSG_BLTOUCH_RESET, PSTR("M280 P" STRINGIFY(Z_ENDSTOP_SERVO_NR) " S" STRINGIFY(BLTOUCH_RESET)));
     #endif
-    MENU_ITEM(submenu, MSG_TUNE, lcd_tune_menu);
-    /*if (planner.movesplanned() || IS_SD_PRINTING) {
+
+    if (planner.movesplanned() || IS_SD_PRINTING) {
       MENU_ITEM(submenu, MSG_TUNE, lcd_tune_menu);
     }
     else {
@@ -597,7 +596,7 @@ void kill_screen(const char* lcd_msg) {
       #endif
     }
     MENU_ITEM(submenu, MSG_CONTROL, lcd_control_menu);
-    */
+
     #if ENABLED(SDSUPPORT)
       if (card.cardOK) {
         if (card.isFileOpen()) {
@@ -735,73 +734,71 @@ void kill_screen(const char* lcd_msg) {
     // ^ Main
     //
     MENU_BACK(MSG_MAIN);
-    
-    // If in printing, only show Temperature, flowm fan speedm Print speed and retraction control
-    if (card.sdprinting)
-    {
-	//
-	// Temperature control:
-	//
-	MENU_ITEM(submenu, MSG_TEMPERATURE " " MSG_CONTROL, lcd_control_temperature_menu);
-	
-	//
-	// Flow control:
-	//	
-	MENU_ITEM(submenu,MSG_FLOW " " MSG_CONTROL, lcd_flow_control_menu);
-	
-	//
-	// Fan Speed :
-	//	
-	MENU_MULTIPLIER_ITEM_EDIT(int3, MSG_FAN_SPEED, &fanSpeed[0], 0, 255);
-	
-	//
-	// Speed:
-	//
-	MENU_ITEM_EDIT(int3, MSG_SPEED, &feedrate_percentage, 10, 999);
-	
-	//
-	// Retraction speed:
-	//	
-	MENU_ITEM_EDIT(float3, MSG_CONTROL_RETRACTF, &retract_feedrate_mm_s, 1, 999);
-    } else {
-	//
-	// Homing:
-	//	
-	MENU_ITEM(gcode, MSG_AUTO_HOME, PSTR("G28"));
 
-	//
-	// Temperature control:
-	//
-	MENU_ITEM(submenu, MSG_TEMPERATURE " " MSG_CONTROL, lcd_heat_noozle_menu);
-	
-	//
-	// Cooldown control:
-	//
-	MENU_ITEM(function, MSG_COOLDOWN, lcd_cooldown);
+    //
+    // Speed:
+    //
+    MENU_ITEM_EDIT(int3, MSG_SPEED, &feedrate_percentage, 10, 999);
 
-	// 
-	// Manual axis control:
-	//
-	MENU_ITEM(submenu, MSG_MOVE_AXIS, lcd_move_menu);
-	//MENU_ITEM(submenu, MSG_FILAMENTCHANGE, lcd_change_filament_menu);
-	//MENU_ITEM(function, "Bed level", lcd_level_bed_function);
-	
-	#ifdef ENABLE_AUTO_BED_LEVELING
-	MENU_ITEM(gcode, "Auto bedleveling", PSTR("G29"));
-	#endif
-	MENU_ITEM(gcode, MSG_DISABLE_STEPPERS, PSTR("M84"));
-	
-    }
-    /* Manual bed leveling, Bed Z:
+    // Manual bed leveling, Bed Z:
     #if ENABLED(MANUAL_BED_LEVELING)
       MENU_ITEM_EDIT(float43, MSG_BED_Z, &mbl.z_offset, -1, 1);
-    #endif*/
-    END_MENU();
-  }
-    
-  static void lcd_flow_control_menu()
-  {
-    START_MENU();
+    #endif
+
+    //
+    // Nozzle:
+    // Nozzle [1-4]:
+    //
+    #if HOTENDS == 1
+      #if TEMP_SENSOR_0 != 0
+        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE, &thermalManager.target_temperature[0], 0, HEATER_0_MAXTEMP - 15, watch_temp_callback_E0);
+      #endif
+    #else //HOTENDS > 1
+      #if TEMP_SENSOR_0 != 0
+        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE MSG_N1, &thermalManager.target_temperature[0], 0, HEATER_0_MAXTEMP - 15, watch_temp_callback_E0);
+      #endif
+      #if TEMP_SENSOR_1 != 0
+        MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE MSG_N2, &thermalManager.target_temperature[1], 0, HEATER_1_MAXTEMP - 15, watch_temp_callback_E1);
+      #endif
+      #if HOTENDS > 2
+        #if TEMP_SENSOR_2 != 0
+          MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE MSG_N3, &thermalManager.target_temperature[2], 0, HEATER_2_MAXTEMP - 15, watch_temp_callback_E2);
+        #endif
+        #if HOTENDS > 3
+          #if TEMP_SENSOR_3 != 0
+            MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_NOZZLE MSG_N4, &thermalManager.target_temperature[3], 0, HEATER_3_MAXTEMP - 15, watch_temp_callback_E3);
+          #endif
+        #endif // HOTENDS > 3
+      #endif // HOTENDS > 2
+    #endif // HOTENDS > 1
+
+    //
+    // Bed:
+    //
+    #if TEMP_SENSOR_BED != 0
+      MENU_MULTIPLIER_ITEM_EDIT_CALLBACK(int3, MSG_BED, &thermalManager.target_temperature_bed, 0, BED_MAXTEMP - 15, watch_temp_callback_bed);
+    #endif
+
+    //
+    // Fan Speed:
+    //
+    #if FAN_COUNT > 0
+      #if HAS_FAN0
+        #if FAN_COUNT > 1
+          #define MSG_1ST_FAN_SPEED MSG_FAN_SPEED " 1"
+        #else
+          #define MSG_1ST_FAN_SPEED MSG_FAN_SPEED
+        #endif
+        MENU_MULTIPLIER_ITEM_EDIT(int3, MSG_1ST_FAN_SPEED, &fanSpeeds[0], 0, 255);
+      #endif
+      #if HAS_FAN1
+        MENU_MULTIPLIER_ITEM_EDIT(int3, MSG_FAN_SPEED " 2", &fanSpeeds[1], 0, 255);
+      #endif
+      #if HAS_FAN2
+        MENU_MULTIPLIER_ITEM_EDIT(int3, MSG_FAN_SPEED " 3", &fanSpeeds[2], 0, 255);
+      #endif
+    #endif // FAN_COUNT > 0
+
     //
     // Flow:
     // Flow 1:
@@ -822,7 +819,27 @@ void kill_screen(const char* lcd_msg) {
         #endif //EXTRUDERS > 3
       #endif //EXTRUDERS > 2
     #endif //EXTRUDERS > 1
-    
+
+    //
+    // Babystep X:
+    // Babystep Y:
+    // Babystep Z:
+    //
+    #if ENABLED(BABYSTEPPING)
+      #if ENABLED(BABYSTEP_XY)
+        MENU_ITEM(submenu, MSG_BABYSTEP_X, lcd_babystep_x);
+        MENU_ITEM(submenu, MSG_BABYSTEP_Y, lcd_babystep_y);
+      #endif //BABYSTEP_XY
+      MENU_ITEM(submenu, MSG_BABYSTEP_Z, lcd_babystep_z);
+    #endif
+
+    //
+    // Change filament
+    //
+    #if ENABLED(FILAMENT_CHANGE_FEATURE)
+       MENU_ITEM(function, MSG_FILAMENTCHANGE, lcd_enqueue_filament_change);
+    #endif
+
     END_MENU();
   }
 
@@ -1654,7 +1671,7 @@ void kill_screen(const char* lcd_msg) {
 
   /**
    *
-   * "Tune" > "Temperature" submenu
+   * "Control" > "Temperature" submenu
    *
    */
   static void lcd_control_temperature_menu() {
@@ -1663,7 +1680,7 @@ void kill_screen(const char* lcd_msg) {
     //
     // ^ Control
     //
-    MENU_BACK(MSG_TUNE);
+    MENU_BACK(MSG_CONTROL);
 
     //
     // Nozzle:
