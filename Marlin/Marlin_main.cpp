@@ -6490,6 +6490,11 @@ inline void gcode_M226() {
 
 #endif // HAS_SERVOS
 
+  inline void gcode_M283() {
+	if (VERSION_STRING) SERIAL_PROTOCOLLNPGM(VERSION_STRING);
+	else SERIAL_ERRORLNPGM("Version Unknown");
+  }
+
 #if HAS_BUZZER
 
   /**
@@ -8329,6 +8334,10 @@ void process_next_command() {
           gcode_M280();
           break;
       #endif // HAS_SERVOS
+	  
+	  case 283: // M283: Return version number of the firmware
+		  gcode_M283();
+		  break;
 
       #if HAS_BUZZER
         case 300: // M300: Play beep tone

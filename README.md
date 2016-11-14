@@ -1,19 +1,19 @@
-# Marlin 3D Printer Firmware
+# Customized Marlin Firmware for 3DRaion Printer.
 
-<img align="top" width=175 src="buildroot/share/pixmaps/logo/marlin-250.png" />
+<img align="top" width=175 src="buildroot/share/pixmaps/logo/Raion_Logo.png" /> 
 
-Additional documentation can be found at [The Marlin Documentation Project](https://www.marlinfw.org/).
-Please test this firmware and inform us if it misbehaves in any way, volunteers are standing by!
+Customized firmware version for use with 3D raion Printer and 3D Raion Printer with diamond hotend.
 
-## Release Candidate -- Marlin 1.1.0-RC7 - 31 July 2016
+Based on Marlin 3D Printer Firmware, RC07
 
-__Not for production use – use with caution!__
+## Changes from Marlin
+- Change firmware version to 2.0.1: Configuration.h and Configuration_adv.h changed version to 010101
+- Refactor the LCD Menus to be conformed with the current menus of 3D Raion Printers
+- If Mixing extruder is used, we still have the possibility of control each extruder's motor individually 
+- LCD encoder rotation invert
+- add Version query gcode (M283)
 
-You can download earlier versions of Marlin on the [Releases page](https://github.com/MarlinFirmware/Marlin/releases). (The latest "stable" release of Marlin is 1.0.2-1.)
-
-The latest Release Candidate lives in the ["RC" branch](https://github.com/MarlinFirmware/Marlin/tree/RC). Bugs that we find in the current Release Candidate are patched in the ["RCBugFix" branch](https://github.com/MarlinFirmware/Marlin/tree/RCBugFix), so during beta testing this is where you can always find the latest code on its way towards release.
-
-## Recent Changes
+## Recent Changes in Marlin (vs Marlin 1.0.2-1)
 - RC7 - 31 Jul 2016
   - Add Print Job Timer and Print Counter (`PRINTCOUNTER`)
   - New `M600` Filament Change (`FILAMENT_CHANGE_FEATURE`)
