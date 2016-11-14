@@ -297,7 +297,7 @@ uint8_t lcdDrawUpdate = LCDVIEW_CLEAR_CALL_REDRAW; // Set when the LCD needs to 
     _countedItems = _thisItemNr
 
   #define END_MENU() \
-    } \
+    }; \
     _countedItems = _thisItemNr; \
     UNUSED(_skipStatic)
 
@@ -1413,12 +1413,19 @@ void kill_screen(const char* lcd_msg) {
 	}		
   }
   // only automatically support till 3 mixing steppers for now
-  static void lcd_move_mixing_e0() { _lcd_move_mixing_e(0); }
+  static void lcd_move_mixing_e0() { 
+		_lcd_move_mixing_e(0); 
+	}
 	#if MIXING_STEPPERS > 1
-    static void lcd_move_mixing_e1() { _lcd_move_mixing_e(1); }
-    #if MIXING_STEPPERS > 2
-      static void lcd_move_mixing_e2() { _lcd_move_mixing_e(2); }
-    #endif
+    static void lcd_move_mixing_e1() { 
+		_lcd_move_mixing_e(1); 
+	}
+		#if MIXING_STEPPERS > 2
+		  static void lcd_move_mixing_e2() { 
+			_lcd_move_mixing_e(2); 
+		  }
+		#endif
+    #endif	
   #endif // MIXING_EXTRUDER
   
   static void _lcd_move_menu_axis() {
@@ -1439,8 +1446,16 @@ void kill_screen(const char* lcd_msg) {
         else
           MENU_ITEM(gcode, MSG_SELECT MSG_E2, PSTR("T1"));
       #endif
-	  #if DISABLED(MIXING_EXTRUDER)
-		  MENU_ITEM(submenu, MSG_MOVE_E, lcd_move_e);
+	  #if ENABLED(MIXING_EXTRUDER)
+	    MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E1, lcd_move_mixing_e0);
+			#if MIXING_STEPPERS > 1
+			  MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E2, lcd_move_mixing_e1);
+			  #if MIXING_STEPPERS > 2
+				MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E3, lcd_move_mixing_e2);
+			  #endif
+			#endif
+	  #else
+		MENU_ITEM(submenu, MSG_MOVE_E, lcd_move_e);
 		#if E_MANUAL > 1
 			MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E1, lcd_move_e0);
 			MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E2, lcd_move_e1);
@@ -1448,15 +1463,6 @@ void kill_screen(const char* lcd_msg) {
 			  MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E3, lcd_move_e2);
 			  #if E_MANUAL > 3
 				MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E4, lcd_move_e3);
-			  #endif
-			#endif
-		#endif
-	  #else
-		MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E1, lcd_move_mixing_e0);
-			#if MIXING_STEPPERS > 1
-			  MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E2, lcd_move_mixing_e1);
-			  #if MIXING_STEPPERS > 2
-				MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E3, lcd_move_mixing_e2);
 			  #endif
 			#endif
 		#endif

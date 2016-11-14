@@ -220,7 +220,7 @@
 
 */
 
-#if !(defined(__ASSEMBLER__) || defined(__DOXYGEN__))
+#ifndef __ASSEMBLER__
 
 #ifndef FUSEMEM
 #define FUSEMEM  __attribute__((__used__, __section__ (".fuse")))
@@ -269,6 +269,6 @@ typedef struct
 #endif
 
 
-#endif /* !(__ASSEMBLER__ || __DOXYGEN__) */
+#endif /* !__ASSEMBLER__ */
 
 #endif /* _AVR_FUSE_H_ */

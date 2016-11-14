@@ -455,7 +455,4 @@
 #define    E2END    0x7F
 #define    FLASHEND 0x7FF
 
-#define SLEEP_MODE_IDLE         0
-#define SLEEP_MODE_PWR_DOWN     _BV(SM)
-
 #endif /* _AVR_IO2333_H_ */

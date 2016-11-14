@@ -1,7 +1,6 @@
 /* Copyright (c) 2002,2004,2005 Marek Michalkiewicz
    Copyright (c) 2005, Carlos Lamas
    Copyright (c) 2005,2007 Joerg Wunsch
-   Copyright (c) 2013 Embecosm
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -49,7 +48,6 @@
     Since these typedefs are mandated by the C99 standard, they are preferred
     over rolling your own typedefs.  */
 
-#ifndef __DOXYGEN__
 /*
  * __USING_MINT8 is defined to 1 if the -mint8 option is in effect.
  */
@@ -58,8 +56,6 @@
 #else
 # define __USING_MINT8 0
 #endif
-
-#endif	/* !__DOXYGEN__ */
 
 /* Integer types */
 
@@ -284,14 +280,11 @@ typedef uint64_t uintmax_t;
 
 /*@}*/
 
-#ifndef __DOXYGEN__
 /* Helping macro */
 #ifndef __CONCAT
 #define __CONCATenate(left, right) left ## right
 #define __CONCAT(left, right) __CONCATenate(left, right)
 #endif
-
-#endif	/* !__DOXYGEN__ */
 
 #if !defined(__cplusplus) || defined(__STDC_LIMIT_MACROS)
 
@@ -311,9 +304,12 @@ typedef uint64_t uintmax_t;
 
 #define INT8_MIN (-INT8_MAX - 1)
 
-#if __USING_MINT8
+/** \ingroup avr_stdint
+    largest value an uint8_t can hold. */
 
 #define UINT8_MAX (__CONCAT(INT8_MAX, U) * 2U + 1U)
+
+#if __USING_MINT8
 
 #define INT16_MAX 0x7fffL
 #define INT16_MIN (-INT16_MAX - 1L)
@@ -324,11 +320,6 @@ typedef uint64_t uintmax_t;
 #define UINT32_MAX (__CONCAT(INT32_MAX, U) * 2ULL + 1ULL)
 
 #else /* !__USING_MINT8 */
-
-/** \ingroup avr_stdint
-    largest value an uint8_t can hold. */
-
-#define UINT8_MAX (INT8_MAX * 2 + 1)
 
 /** \ingroup avr_stdint
     largest positive value an int16_t can hold. */
@@ -586,7 +577,7 @@ typedef uint64_t uintmax_t;
 /** \ingroup avr_stdint
     largest value a size_t can hold. */
 
-#define SIZE_MAX UINT16_MAX
+#define SIZE_MAX (__CONCAT(INT16_MAX, U))
 
 
 /* Limits of wchar_t */
@@ -597,20 +588,13 @@ typedef uint64_t uintmax_t;
 
 /* Limits of wint_t */
 /* wchar.h is currently not implemented */
-#ifndef WCHAR_MAX
-#define WCHAR_MAX __WCHAR_MAX__
-#define WCHAR_MIN __WCHAR_MIN__
-#endif
-#ifndef WINT_MAX
-#define WINT_MAX __WINT_MAX__
-#define WINT_MIN __WINT_MIN__
-#endif
+/* #define WINT_MAX */
+/* #define WINT_MIN */
 
 
 #endif /* !defined(__cplusplus) || defined(__STDC_LIMIT_MACROS) */
 
-#if (!defined __cplusplus || __cplusplus >= 201103L \
-     || defined __STDC_CONSTANT_MACROS)
+#if !defined(__cplusplus) || defined(__STDC_CONSTANT_MACROS)
 
 /** \name Macros for integer constants
     C++ implementations should define these macros only when
@@ -619,20 +603,6 @@ typedef uint64_t uintmax_t;
     These definitions are valid for integer constants without suffix and
     for macros defined as integer constant without suffix */
 
-/* The GNU C preprocessor defines special macros in the implementation
-   namespace to allow a definition that works in #if expressions.  */
-#ifdef __INT8_C
-#define INT8_C(c) __INT8_C(c)
-#define INT16_C(c) __INT16_C(c)
-#define INT32_C(c) __INT32_C(c)
-#define INT64_C(c) __INT64_C(c)
-#define UINT8_C(c) __UINT8_C(c)
-#define UINT16_C(c) __UINT16_C(c)
-#define UINT32_C(c) __UINT32_C(c)
-#define UINT64_C(c) __UINT64_C(c)
-#define INTMAX_C(c) __INTMAX_C(c)
-#define UINTMAX_C(c) __UINTMAX_C(c)
-#else
 /** \ingroup avr_stdint
     define a constant of type int8_t */
 
@@ -695,12 +665,9 @@ typedef uint64_t uintmax_t;
 
 #define UINTMAX_C(value) __CONCAT(value, ULL)
 
-#endif /* !__INT8_C */
-
 /*@}*/
 
-#endif /* (!defined __cplusplus || __cplusplus >= 201103L \
-	   || defined __STDC_CONSTANT_MACROS) */
+#endif /* !defined(__cplusplus) || defined(__STDC_LIMIT_MACROS) */
 
 
 #endif /* _STDINT_H_ */

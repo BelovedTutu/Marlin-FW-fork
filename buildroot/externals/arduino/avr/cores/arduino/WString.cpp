@@ -193,7 +193,7 @@ String & String::copy(const __FlashStringHelper *pstr, unsigned int length)
 void String::move(String &rhs)
 {
 	if (buffer) {
-		if (rhs && capacity >= rhs.len) {
+		if (capacity >= rhs.len) {
 			strcpy(buffer, rhs.buffer);
 			len = rhs.len;
 			rhs.len = 0;
@@ -740,11 +740,6 @@ long String::toInt(void) const
 
 float String::toFloat(void) const
 {
-	return float(toDouble());
-}
-
-double String::toDouble(void) const
-{
-	if (buffer) return atof(buffer);
+	if (buffer) return float(atof(buffer));
 	return 0;
 }

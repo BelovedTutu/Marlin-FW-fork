@@ -260,11 +260,16 @@ VPATH = .
 VPATH += ./Marlin
 VPATH += $(BUILD_DIR)
 VPATH += $(HARDWARE_SRC)
+VPATH += $(HARDWARE_DIR)/libraries/LiquidCrystal/src
+VPATH += $(HARDWARE_DIR)/libraries/SPI
+VPATH += $(HARDWARE_DIR)/libraries/SPI
+VPATH += $(HARDWARE_DIR)/libraries/SPI/src
+VPATH += $(HARDWARE_DIR)/libraries/LiquidCrystal/src
 ifeq ($(HARDWARE_VARIANT), $(filter $(HARDWARE_VARIANT),arduino Teensy Sanguino))
 VPATH += $(HARDWARE_DIR)/marlin/avr/libraries/LiquidCrystal/src
 VPATH += $(HARDWARE_DIR)/marlin/avr/libraries/SPI
 VPATH += $(HARDWARE_DIR)/arduino/avr/libraries/SPI
-VPATH += $(HARDWARE_DIR)/arduino/avr/libraries	/SPI/src
+VPATH += $(HARDWARE_DIR)/arduino/avr/libraries/SPI/src
 VPATH += $(ARDUINO_INSTALL_DIR)/libraries/LiquidCrystal/src
 ifeq ($(LIQUID_TWI2), 1)
 VPATH += $(ARDUINO_INSTALL_DIR)/libraries/Wire
