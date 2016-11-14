@@ -82,6 +82,8 @@ LIQUID_TWI2        ?= 0
 # this defines if Wire is needed
 WIRE               ?= 0
 
+# thif defines if u8glib is needed
+U8GLIB		   ?= 1
 ############################################################################
 # Below here nothing should be changed...
 
@@ -271,6 +273,10 @@ VPATH += $(HARDWARE_DIR)/marlin/avr/libraries/SPI
 VPATH += $(HARDWARE_DIR)/arduino/avr/libraries/SPI
 VPATH += $(HARDWARE_DIR)/arduino/avr/libraries/SPI/src
 VPATH += $(ARDUINO_INSTALL_DIR)/libraries/LiquidCrystal/src
+ifeq ($(U8GLIB), 1)
+VPATH += ./Marlin/libraries/U8glib
+VPATH += ./Marlin/libraries/U8glib/utility
+endif
 ifeq ($(LIQUID_TWI2), 1)
 VPATH += $(ARDUINO_INSTALL_DIR)/libraries/Wire
 VPATH += $(ARDUINO_INSTALL_DIR)/libraries/Wire/utility
@@ -283,6 +289,10 @@ endif
 else
 VPATH += $(HARDWARE_DIR)/libraries/LiquidCrystal
 VPATH += $(HARDWARE_DIR)/libraries/SPI
+ifeq ($(U8GLIB), 1)
+VPATH += ./Marlin/libraries/U8glib
+VPATH += ./Marlin/libraries/U8glib/utility
+endif
 ifeq ($(LIQUID_TWI2), 1)
 VPATH += $(HARDWARE_DIR)/libraries/Wire
 VPATH += $(HARDWARE_DIR)/libraries/Wire/utility
@@ -324,7 +334,11 @@ else
 SRC += twi.c
 CXXSRC += Wire.cpp LiquidTWI2.cpp
 endif
-
+ifeq ($(U8GLIB), 1)
+U8PATH = ./Marlin/libraries/U8glib
+SRC += $(shell find $(U8PATH) -name '*.c' -type f -exec basename {} \; )
+CXXSRC += U8glib.cpp
+endif
 ifeq ($(WIRE), 1)
 SRC += twi.c
 CXXSRC += Wire.cpp
