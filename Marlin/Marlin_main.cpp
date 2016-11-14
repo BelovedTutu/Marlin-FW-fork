@@ -517,7 +517,7 @@ static uint8_t target_extruder;
 #if ENABLED(MIXING_EXTRUDER)
   float mixing_factor[MIXING_STEPPERS];
   #if MIXING_VIRTUAL_TOOLS > 1
-    float mixing_virtual_tool_mix[MIXING_VIRTUAL_TOOLS][MIXING_STEPPERS];
+    float mixing_virtual_tool_mix[MIXING_VIRTUAL_TOOLS+MIXING_STEPPERS][MIXING_STEPPERS];
   #endif
 #endif
 
@@ -979,6 +979,10 @@ void setup() {
     for (uint8_t t = 0; t < MIXING_VIRTUAL_TOOLS; t++)
       for (uint8_t i = 0; i < MIXING_STEPPERS; i++)
         mixing_virtual_tool_mix[t][i] = mixing_factor[i];
+	// After fill in the table for mixing extruder, the Table will be filled with primary color of each extruder for individual control
+	for (uint8_t t = MIXING_VIRTUAL_TOOLS; t < MIXING_VIRTUAL_TOOLS+MIXING_STEPPERS; t++)
+	  for (uint8_t i = 0; i < MIXING_STEPPERS; i++)
+        mixing_virtual_tool_mix[t][i] = (i == t - MIXING_VIRTUAL_TOOLS) ? 1 : 0;
   #endif
 }
 
@@ -6586,7 +6590,9 @@ inline void gcode_M907() {
         normalize_mix();
         for (uint8_t i = 0; i < MIXING_STEPPERS; i++)
           mixing_virtual_tool_mix[tool_index][i] = mixing_factor[i];
-      }
+      } else {
+		  // Ignore any runtime intervention into the rest of the mixing weight table, because the other entries left is for primary color.
+	  }
     }
 
   #endif
@@ -6647,7 +6653,7 @@ inline void invalid_extruder_error(const uint8_t &e) {
 void tool_change(const uint8_t tmp_extruder, const float fr_mm_m/*=0.0*/, bool no_move/*=false*/) {
   #if ENABLED(MIXING_EXTRUDER) && MIXING_VIRTUAL_TOOLS > 1
 
-    if (tmp_extruder >= MIXING_VIRTUAL_TOOLS) {
+    if (tmp_extruder >= MIXING_VIRTUAL_TOOLS + MIXING_STEPPERS) {
       invalid_extruder_error(tmp_extruder);
       return;
     }

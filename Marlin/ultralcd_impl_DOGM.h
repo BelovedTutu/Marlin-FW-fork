@@ -47,7 +47,7 @@
 #include "dogm_bitmaps.h"
 #include "duration_t.h"
 
-#include <U8glib.h>
+#include "libraries/U8glib/U8glib.h"
 
 #if ENABLED(SHOW_BOOTSCREEN) && ENABLED(SHOW_CUSTOM_BOOTSCREEN)
   #include "_Bootscreen.h"

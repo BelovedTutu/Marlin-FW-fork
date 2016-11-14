@@ -38,7 +38,7 @@
 #define LCD_PIXEL_WIDTH 128
 #define LCD_PIXEL_HEIGHT 64
 
-#include <U8glib.h>
+#include "libraries/U8glib/U8glib.h"
 
 //set optimization so ARDUINO optimizes this file
 #pragma GCC optimize (3)
