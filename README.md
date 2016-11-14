@@ -84,8 +84,7 @@ Proposed patches should be submitted as a Pull Request against the [RCBugFix](ht
 
 Please test this firmware and inform us if it misbehaves in any way. Volunteers are standing by!
 
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/2224/badge.svg)](https://scan.coverity.com/projects/2224)
-[![Travis Build Status](https://travis-ci.org/MarlinFirmware/MarlinDev.svg)](https://travis-ci.org/MarlinFirmware/MarlinDev)
+[![Snap-ci Build Status](https://snap-ci.com/N2LnOrWgJMFXRaRkT_5eE2cHQgK-CHT44tvMoocgLYQ/build_image)](https://snap-ci.com/BelovedTutu/Marlin-FW-fork/branch/DiamondHotend)
 
 ##### [RepRap.org Wiki Page](http://reprap.org/wiki/Marlin)
 
