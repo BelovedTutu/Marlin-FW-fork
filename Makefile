@@ -366,14 +366,14 @@ OPT = s
 DEFINES ?=
 
 # Program settings
-CC = $(AVR_TOOLS_PATH)bin/avr-gcc
-CXX = $(AVR_TOOLS_PATH)bin/avr-g++
-OBJCOPY = $(AVR_TOOLS_PATH)bin/avr-objcopy
-OBJDUMP = $(AVR_TOOLS_PATH)bin/avr-objdump
-AR  = $(AVR_TOOLS_PATH)bin/avr-ar
-SIZE = $(AVR_TOOLS_PATH)bin/avr-size
-NM = $(AVR_TOOLS_PATH)bin/avr-nm
-AVRDUDE = $(AVR_TOOLS_PATH)bin/avrdude
+CC = avr-gcc
+CXX = avr-g++
+OBJCOPY = avr-objcopy
+OBJDUMP = avr-objdump
+AR  = avr-ar
+SIZE = avr-size
+NM = avr-nm
+AVRDUDE = avrdude
 REMOVE = rm -f
 MV = mv -f
 
