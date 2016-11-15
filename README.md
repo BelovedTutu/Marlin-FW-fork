@@ -84,7 +84,7 @@ Proposed patches should be submitted as a Pull Request against the [RCBugFix](ht
 
 Please test this firmware and inform us if it misbehaves in any way. Volunteers are standing by!
 
-[![Travis Build Status]](https://travis-ci.com/BelovedTutu/Marlin-FW-fork)
+[![Travis Build Status](https://travis-ci.com/BelovedTutu/Marlin-FW-fork.svg?token=ScTS197SYABVsXxmanxK&branch=DiamondHotend)](https://travis-ci.com/BelovedTutu/Marlin-FW-fork)
 
 ##### [RepRap.org Wiki Page](http://reprap.org/wiki/Marlin)
 
