@@ -74,7 +74,7 @@ Based on Marlin 3D Printer Firmware, RC07
   - Published for testing
 
 ## Submitting Patches
-Proposed patches should be submitted as a Pull Request against the [RCBugFix](https://github.com/MarlinFirmware/Marlin/tree/RCBugFix) branch.
+Proposed patches should be submitted as a Pull Request against the [RCBugFix](https://github.com/BelovedTutu/Marlin-FW-fork/tree/RCBugFix) branch.
 
 - Don't submit new feature proposals. The RCBugFix branch is for fixing bugs in existing features.
 - Do submit questions and concerns. The "naive" question is often the one we forget to ask.
