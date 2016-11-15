@@ -1812,7 +1812,7 @@ static void clean_up_after_endstop_or_probe_move() {
 
 #endif //HAS_BED_PROBE
 
-#if ENABLED(Z_PROBE_ALLEN_KEY) || ENABLED(Z_PROBE_SLED) || ENABLED(Z_SAFE_HOMING) || HAS_PROBING_PROCEDURE || HOTENDS > 1 || ENABLED(NOZZLE_CLEAN_FEATURE) || ENABLED(NOZZLE_PARK_FEATURE)
+#if ENABLED(MANUAL_BED_LEVEL_ADJUST) || ENABLED(Z_PROBE_ALLEN_KEY) || ENABLED(Z_PROBE_SLED) || ENABLED(Z_SAFE_HOMING) || HAS_PROBING_PROCEDURE || HOTENDS > 1 || ENABLED(NOZZLE_CLEAN_FEATURE) || ENABLED(NOZZLE_PARK_FEATURE)
   static bool axis_unhomed_error(const bool x, const bool y, const bool z) {
     const bool xx = x && !axis_homed[X_AXIS],
                yy = y && !axis_homed[Y_AXIS],
@@ -3834,7 +3834,24 @@ inline void gcode_G28() {
 
     KEEPALIVE_STATE(IN_HANDLER);
   }
-
+#elif ENABLED(MANUAL_BED_LEVEL_ADJUST)
+  /**
+   * G29: Manual Process to adjust bed level.
+   *      Will fail if the printer has not been homed with G28.
+   *
+   */
+   inline void gcode_G29() {
+	   // Don't allow auto-leveling without homing first
+		if (axis_unhomed_error(true, true, true)){ 
+			#if ENABLED(_DEBUG)
+			  SERIAL_ERROR_START;
+			  SERIAL_ERRORLN("Need homing");
+			#endif  
+			return;
+		}
+		
+		lcd_manual_bed_level_show_screen(MANUAL_BED_ADJUST_MESSAGE_PAGE_0);
+   }
 #endif //AUTO_BED_LEVELING_FEATURE
 
 #if HAS_BED_PROBE
@@ -5651,6 +5668,12 @@ inline void gcode_M226() {
 
 #endif // HAS_SERVOS
 
+/**
+ * M283: return version string for version query
+ */
+ inline void gcode_M283() {
+	SERIAL_PROTOCOLLN(VERSION_STRING);
+ }
 #if HAS_BUZZER
 
   /**
@@ -7096,7 +7119,7 @@ void process_next_command() {
         gcode_G28();
         break;
 
-      #if ENABLED(AUTO_BED_LEVELING_FEATURE) || ENABLED(MESH_BED_LEVELING)
+      #if ENABLED(AUTO_BED_LEVELING_FEATURE) || ENABLED(MESH_BED_LEVELING) || ENABLED(MANUAL_BED_LEVEL_ADJUST)
         case 29: // G29 Detailed Z probe, probes the bed at 3 or more points.
           gcode_G29();
           break;
@@ -7471,7 +7494,11 @@ void process_next_command() {
           gcode_M280();
           break;
       #endif // HAS_SERVOS
-
+	  
+	  case 283:
+		gcode_M283();
+		break;
+		  
       #if HAS_BUZZER
         case 300: // M300 - Play beep tone
           gcode_M300();

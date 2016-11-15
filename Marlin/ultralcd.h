@@ -74,7 +74,10 @@
     #if ENABLED(FILAMENT_CHANGE_FEATURE)
       void lcd_filament_change_show_message(FilamentChangeMessage message);
     #endif // FILAMENT_CHANGE_FEATURE
-
+    
+	#if ENABLED(MANUAL_BED_LEVEL_ADJUST)
+	  void lcd_manual_bed_level_show_screen(ManualBedLevelAdjustMessage message);
+	#endif
   #else
     FORCE_INLINE void lcd_buttons_update() {}
   #endif

@@ -483,7 +483,7 @@ static void lcd_implementation_mark_as_selected(uint8_t row, bool isSelected) {
   u8g.setPrintPos((START_COL) * (DOG_CHAR_WIDTH), (row + 1) * (DOG_CHAR_HEIGHT));
 }
 
-#if ENABLED(LCD_INFO_MENU) || ENABLED(FILAMENT_CHANGE_FEATURE)
+#if ENABLED(LCD_INFO_MENU) || ENABLED(FILAMENT_CHANGE_FEATURE) || ENABLED (MANUAL_BED_LEVEL_ADJUST)
 
   static void lcd_implementation_drawmenu_static(uint8_t row, const char* pstr, bool center=true, bool invert=false, const char* valstr=NULL) {
 

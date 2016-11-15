@@ -122,6 +122,14 @@ enum TempState {
   };
 #endif
 
+#if ENABLED(MANUAL_BED_LEVEL_ADJUST)
+	enum ManualBedLevelAdjustMessage {
+	  MANUAL_BED_ADJUST_MESSAGE_PAGE_0,
+	  MANUAL_BED_ADJUST_MESSAGE_PAGE_1,
+	  MANUAL_BED_ADJUST_MESSAGE_PAGE_2
+	};
+#endif
+
 #if ENABLED(FILAMENT_CHANGE_FEATURE)
   enum FilamentChangeMenuResponse {
     FILAMENT_CHANGE_RESPONSE_WAIT_FOR,

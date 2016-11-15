@@ -597,6 +597,37 @@
   #define MSG_INFO_PSU                        "Power Supply"
 #endif
 
+#ifndef MSG_BED_LEVEL_ADJUST_PAGE_0_HEADER
+  #define MSG_BED_LEVEL_ADJUST_PAGE_0_HEADER  "MANUAL BED LEVEL"
+#endif
+#ifndef MSG_BED_LEVEL_ADJUST_PAGE_0_1
+  #define MSG_BED_LEVEL_ADJUST_PAGE_0_1		  "We will now begin the "
+#endif
+#ifndef MSG_BED_LEVEL_ADJUST_PAGE_0_2
+  #define MSG_BED_LEVEL_ADJUST_PAGE_0_2		  "manual bed level adjust."
+#endif
+#ifndef MSG_BED_LEVEL_ADJUST_FOOTER
+  #define MSG_BED_LEVEL_ADJUST_FOOTER  "Click to continue."
+#endif
+#ifndef MSG_BED_LEVEL_ADJUST_PAGE_1_HEADER
+  #define MSG_BED_LEVEL_ADJUST_PAGE_1_HEADER  "Now please change Z"
+#endif
+#ifndef MSG_BED_LEVEL_ADJUST_PAGE_1_1
+  #define MSG_BED_LEVEL_ADJUST_PAGE_1_1		  "to about 1mm from"
+#endif
+#ifndef MSG_BED_LEVEL_ADJUST_PAGE_1_2
+  #define MSG_BED_LEVEL_ADJUST_PAGE_1_2		  "the extruder."
+#endif
+#ifndef MSG_BED_LEVEL_ADJUST_PAGE_2_HEADER
+  #define MSG_BED_LEVEL_ADJUST_PAGE_2_HEADER  "Now please use a paper"
+#endif
+#ifndef MSG_BED_LEVEL_ADJUST_PAGE_2_1
+  #define MSG_BED_LEVEL_ADJUST_PAGE_2_1		  "and adjust Z so the"
+#endif
+#ifndef MSG_BED_LEVEL_ADJUST_PAGE_2_2
+  #define MSG_BED_LEVEL_ADJUST_PAGE_2_2		  "extruder touch the paper."
+#endif
+
 #ifndef MSG_FILAMENT_CHANGE_HEADER
   #define MSG_FILAMENT_CHANGE_HEADER          "CHANGE FILAMENT"
 #endif
